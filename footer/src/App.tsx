@@ -20,7 +20,7 @@ const App = () => (
       }}
     >
       <Typography variant="h6" align="center">
-        A Micro Frontend Example
+        A Micro Frontend Footer Example
       </Typography>
       <Typography
         variant="subtitle1"
