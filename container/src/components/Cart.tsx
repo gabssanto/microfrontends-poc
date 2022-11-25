@@ -23,6 +23,12 @@ const Cart = ({ cartItems, addToCart, removeFromCart }: Props) => {
   return (
     <Wrapper>
       <h2>Your Cart</h2>
+      <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
+      {cartItems.length > 0 && (
+        <Button variant="contained" color="success">
+          Proceed to checkout
+        </Button>
+      )}
       {cartItems.length === 0 ? <p>No items in cart.</p> : null}
       {cartItems.map((item) => (
         <Box
@@ -40,6 +46,7 @@ const Cart = ({ cartItems, addToCart, removeFromCart }: Props) => {
               p: 1,
               m: 1,
               borderRadius: 1,
+              maxWidth: 200,
             }}
           >
             <h3>{item.title}</h3>
@@ -52,9 +59,12 @@ const Cart = ({ cartItems, addToCart, removeFromCart }: Props) => {
             >
               <h4>{item.amount}</h4>
               <ButtonGroup
-                orientation="vertical"
+                orientation="horizontal"
                 aria-label="vertical contained button group"
                 variant="contained"
+                sx={{
+                  m: 1,
+                }}
               >
                 <Button key="add" color="info">
                   +
@@ -80,7 +90,6 @@ const Cart = ({ cartItems, addToCart, removeFromCart }: Props) => {
           </Box>
         </Box>
       ))}
-      <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
     </Wrapper>
   );
 };
