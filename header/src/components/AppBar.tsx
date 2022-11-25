@@ -5,18 +5,38 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import StoreIcon from "@mui/icons-material/Store";
+import { PaletteMode } from "@mui/material/index";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const pages = ["Products", "Pricing", "Blog"];
+import MaterialUISwitch from "./LightDarkModeSwitch";
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar() {
+interface Props {
+  pages: string[];
+  setSelectedPage: (page: string) => void;
+  selectedPage: string;
+  theme: PaletteMode;
+  setTheme: (theme: PaletteMode) => void;
+  setCartOpen: () => void;
+  cartItems: any[];
+}
+
+const ResponsiveAppBar: React.FC<Props> = ({
+  pages,
+  setSelectedPage,
+  selectedPage,
+  theme,
+  setTheme,
+  setCartOpen,
+  cartItems,
+}) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -36,14 +56,20 @@ function ResponsiveAppBar() {
   };
 
   const handleCloseUserMenu = () => {
+    setSelectedPage("Profile");
     setAnchorElUser(null);
+  };
+
+  const onPageClick = (page: string) => {
+    handleCloseNavMenu();
+    setSelectedPage(page);
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <StoreIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -58,47 +84,15 @@ function ResponsiveAppBar() {
               color: "inherit",
               textDecoration: "none",
             }}
+            onClick={(e) => {
+              e.preventDefault();
+              setSelectedPage("Home");
+            }}
           >
-            LOGO
+            MicroFrontend App
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <StoreIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -115,19 +109,16 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            MicroFrontend App
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+
+          <MenuItem sx={{ m: 2, borderRadius: 1 }} onClick={setCartOpen}>
+            <Badge badgeContent={cartItems.length} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </MenuItem>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -151,6 +142,14 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <Typography
+                variant="h6"
+                color="primary"
+                component="p"
+                sx={{ m: 2 }}
+              >
+                Hello, Karen
+              </Typography>
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
@@ -158,9 +157,18 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
+
+          <MaterialUISwitch
+            sx={{ m: 1 }}
+            defaultChecked
+            checked={theme === "dark"}
+            onChange={() => {
+              setTheme(theme === "dark" ? "light" : "dark");
+            }}
+          />
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;

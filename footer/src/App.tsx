@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
 
 const Footer = styled.footer`
-  background-color: #e9ecef;
+  background-color: #212325;
   position: absolute;
   bottom: 0;
   width: 100vw;
@@ -22,12 +22,7 @@ const App = () => (
       <Typography variant="h6" align="center">
         A Micro Frontend Footer Example
       </Typography>
-      <Typography
-        variant="subtitle1"
-        align="left"
-        color="textSecondary"
-        component="p"
-      >
+      <Typography variant="subtitle1" align="left" component="p">
         Made with ❤️ by gabssanto
       </Typography>
     </div>
